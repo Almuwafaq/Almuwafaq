@@ -11,19 +11,53 @@ type Skill = {
 
 type SkillsPageProps = {
   skills: Skill[];
-  containerVariants: Variants;
-  itemVariants: Variants;
-  hoverScale: Variants;
-  tapScale: Variants;
 };
 
-export default function SkillsPage({
-  containerVariants,
-  itemVariants,
-  hoverScale,
-  tapScale,
-  skills,
-}: SkillsPageProps) {
+export default function SkillsPage({ skills }: SkillsPageProps) {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const floatingVariants = {
+    animate: {
+      y: [0, -20, 0],
+      rotate: [0, 360],
+      transition: {
+        duration: 20,
+        repeat: Infinity,
+        ease: "linear",
+      },
+    },
+  };
+
+  const hoverScale = {
+    scale: 1.05,
+    transition: { type: "spring", stiffness: 300, damping: 10 },
+  };
+
+  const tapScale = {
+    scale: 0.95,
+    transition: { type: "spring", stiffness: 300, damping: 10 },
+  };
   return (
     <motion.section
       className="py-20 relative"

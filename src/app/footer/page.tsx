@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail } from "lucide-react";
 
-export default function Footer({}) {
+export default function Footer() {
   return (
     <motion.footer
       className="py-12 border-t border-white/10"

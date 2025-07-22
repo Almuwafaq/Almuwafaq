@@ -1,15 +1,42 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-type AboutPageProps = {
-  containerVariants: Variants;
-  itemVariants: Variants;
-};
 
-export default function AboutPage({
-  containerVariants,
-  itemVariants,
-}: AboutPageProps) {
+export default function AboutPage() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const floatingVariants = {
+    animate: {
+      y: [0, -20, 0],
+      rotate: [0, 360],
+      transition: {
+        duration: 20,
+        repeat: Infinity,
+        ease: "linear",
+      },
+    },
+  };
   return (
     <motion.section
       className="py-16 md:py-20 relative"

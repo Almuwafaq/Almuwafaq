@@ -5,18 +5,8 @@ import { ArrowRight, Github, Linkedin, Mail, Download } from "lucide-react";
 import { Typewriter } from "react-simple-typewriter";
 type HeroSectionProps = {
   setActiveSection: (section: number) => void;
-  containerVariants: Variants;
-  itemVariants: Variants;
-  hoverScale: Variants;
-  tapScale: Variants;
 };
-export default function HeroSection({
-  setActiveSection,
-  containerVariants,
-  itemVariants,
-  hoverScale,
-  tapScale,
-}: HeroSectionProps) {
+export default function HeroSection({ setActiveSection }: HeroSectionProps) {
   // Function to handle resume download
   const handleResumeDownload = () => {
     // Option 1: If you have a resume file in your public folder
@@ -31,6 +21,50 @@ export default function HeroSection({
 
     // Option 2: If you want to open it in a new tab instead
     // window.open(resumeUrl, '_blank');
+  };
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const floatingVariants = {
+    animate: {
+      y: [0, -20, 0],
+      rotate: [0, 360],
+      transition: {
+        duration: 20,
+        repeat: Infinity,
+        ease: "linear",
+      },
+    },
+  };
+
+  const hoverScale = {
+    scale: 1.05,
+    transition: { type: "spring", stiffness: 300, damping: 10 },
+  };
+
+  const tapScale = {
+    scale: 0.95,
+    transition: { type: "spring", stiffness: 300, damping: 10 },
   };
 
   return (

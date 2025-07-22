@@ -1,29 +1,62 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { Linkedin, Mail, Phone } from "lucide-react";
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
 
-type WorkTogetherProps = {
-  containerVariants: Variants;
-  itemVariants: Variants;
-  hoverScale: Variants;
-  tapScale: Variants;
-};
-
-export default function WorkTogether({
-  containerVariants,
-  itemVariants,
-  hoverScale,
-  tapScale,
-}: WorkTogetherProps) {
+export default function WorkTogether({}) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const floatingVariants = {
+    animate: {
+      y: [0, -20, 0],
+      rotate: [0, 360],
+      transition: {
+        duration: 20,
+        repeat: Infinity,
+        ease: "linear",
+      },
+    },
+  };
+
+  const hoverScale = {
+    scale: 1.05,
+    transition: { type: "spring", stiffness: 300, damping: 10 },
+  };
+
+  const tapScale = {
+    scale: 0.95,
+    transition: { type: "spring", stiffness: 300, damping: 10 },
+  };
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState({ type: "", message: "" });
 
