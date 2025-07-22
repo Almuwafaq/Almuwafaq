@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect, useRef } from "react";
 import {
   motion,
@@ -20,12 +19,12 @@ import {
   Layers,
   Sparkles,
 } from "lucide-react";
-import AboutPage from "./about/page";
-import HeroSection from "./hero/page";
-import SkillsPage from "./skills/page";
-import ProjectPage from "./project/page";
-import Footer from "./footer/page";
-import WorkTogether from "./workTogether/page";
+import AboutPage from "./components/about/AboutSection";
+import HeroSection from "./components/hero/HeroSection";
+import SkillsPage from "./components/skills/SkillsSection";
+import ProjectPage from "./components/project/ProjectSection";
+import Footer from "./components/footer/FooterSection";
+import WorkTogether from "./components/workTogether/WorkSection";
 
 const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -515,7 +514,7 @@ const Portfolio = () => {
             transition={{ type: "spring", stiffness: 300 }}
             onClick={() => navigateToSection(0)}
           >
-            TT
+            Muwafaq
           </motion.div>
           <div className="hidden md:flex space-x-8">
             {[
@@ -551,13 +550,7 @@ const Portfolio = () => {
 
       {/* Hero Section */}
       <div ref={heroRef}>
-        <HeroSection
-          setActiveSection={navigateToSection}
-          containerVariants={containerVariants}
-          itemVariants={itemVariants}
-          hoverScale={hoverScale}
-          tapScale={tapScale}
-        />
+        <HeroSection setActiveSection={navigateToSection} />
       </div>
 
       {/* About Section */}

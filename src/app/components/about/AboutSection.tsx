@@ -3,7 +3,7 @@
 import { motion, Variants } from "framer-motion";
 
 export default function AboutPage() {
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -14,19 +14,19 @@ export default function AboutPage() {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: [0.6, -0.05, 0.01, 0.99], // Using cubic bezier array instead of string
       },
     },
   };
 
-  const floatingVariants = {
+  const floatingVariants: Variants = {
     animate: {
       y: [0, -20, 0],
       rotate: [0, 360],
@@ -37,6 +37,7 @@ export default function AboutPage() {
       },
     },
   };
+
   return (
     <motion.section
       className="py-16 md:py-20 relative"

@@ -1,15 +1,17 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight, Github, Linkedin, Mail, Download } from "lucide-react";
 import { Typewriter } from "react-simple-typewriter";
-type HeroSectionProps = {
+
+// Define props interface for the component
+interface HeroSectionProps {
   setActiveSection: (section: number) => void;
-};
+}
+
+// This should be a regular component, not a page component
 export default function HeroSection({ setActiveSection }: HeroSectionProps) {
-  // Function to handle resume download
   const handleResumeDownload = () => {
-    // Option 1: If you have a resume file in your public folder
     const resumeUrl = "/resume/Taofeek-Resume.pdf";
     const link = document.createElement("a");
     link.href = resumeUrl;
@@ -22,6 +24,7 @@ export default function HeroSection({ setActiveSection }: HeroSectionProps) {
     // Option 2: If you want to open it in a new tab instead
     // window.open(resumeUrl, '_blank');
   };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
