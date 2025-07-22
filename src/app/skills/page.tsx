@@ -1,11 +1,29 @@
-import { motion } from "framer-motion";
+"use client";
+import { motion, Variants } from "framer-motion";
+import { JSX } from "react/jsx-runtime";
+
+type Skill = {
+  name: string;
+  level: number;
+  color: string;
+  icon: JSX.Element;
+};
+
+type SkillsPageProps = {
+  skills: Skill[];
+  containerVariants: Variants;
+  itemVariants: Variants;
+  hoverScale: Variants;
+  tapScale: Variants;
+};
+
 export default function SkillsPage({
   containerVariants,
   itemVariants,
   hoverScale,
   tapScale,
   skills,
-}) {
+}: SkillsPageProps) {
   return (
     <motion.section
       className="py-20 relative"

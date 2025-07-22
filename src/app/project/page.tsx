@@ -1,7 +1,33 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { ChevronRight, Eye, Github, Play } from "lucide-react";
+type ProjectPageProps = {
+  containerVariants: Variants;
+  itemVariants: Variants;
+  hoverScale: Variants;
+  tapScale: Variants;
+  projects: {
+    id: string;
+    title: string;
+    description: string;
+    preview: string;
+    github: string;
+    status: string;
+    tech: string[];
+    gradient: string;
+  }[];
+  setSelectedProject: (project: {
+    id: string;
+    title: string;
+    description: string;
+    preview: string;
+    github: string;
+    status: string;
+    tech: string[];
+    gradient: string;
+  }) => void;
+};
 export default function ProjectPage({
   containerVariants,
   itemVariants,
@@ -9,7 +35,7 @@ export default function ProjectPage({
   tapScale,
   projects,
   setSelectedProject,
-}) {
+}: ProjectPageProps) {
   return (
     <motion.section
       className="py-20 relative"

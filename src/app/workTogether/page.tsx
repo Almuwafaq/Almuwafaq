@@ -1,16 +1,23 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Linkedin, Mail, Phone } from "lucide-react";
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
+
+type WorkTogetherProps = {
+  containerVariants: Variants;
+  itemVariants: Variants;
+  hoverScale: Variants;
+  tapScale: Variants;
+};
 
 export default function WorkTogether({
   containerVariants,
   itemVariants,
   hoverScale,
   tapScale,
-}) {
+}: WorkTogetherProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",

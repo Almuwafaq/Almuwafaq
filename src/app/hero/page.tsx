@@ -1,16 +1,22 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { ArrowRight, Github, Linkedin, Mail, Download } from "lucide-react";
 import { Typewriter } from "react-simple-typewriter";
-
+type HeroSectionProps = {
+  setActiveSection: (section: number) => void;
+  containerVariants: Variants;
+  itemVariants: Variants;
+  hoverScale: Variants;
+  tapScale: Variants;
+};
 export default function HeroSection({
   setActiveSection,
   containerVariants,
   itemVariants,
   hoverScale,
   tapScale,
-}) {
+}: HeroSectionProps) {
   // Function to handle resume download
   const handleResumeDownload = () => {
     // Option 1: If you have a resume file in your public folder

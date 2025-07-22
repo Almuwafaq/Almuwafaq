@@ -1,8 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
+type AboutPageProps = {
+  containerVariants: Variants;
+  itemVariants: Variants;
+};
 
-export default function AboutPage({containerVariants, itemVariants}) {
+export default function AboutPage({
+  containerVariants,
+  itemVariants,
+}: AboutPageProps) {
   return (
     <motion.section
       className="py-16 md:py-20 relative"
