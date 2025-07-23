@@ -8,7 +8,7 @@ import {
   useSpring,
   Variants,
 } from "framer-motion";
-import { Github, X, Eye, Sparkles } from "lucide-react";
+import { Github, X, Eye, Sparkles, Menu } from "lucide-react";
 import AboutPage from "./components/about/AboutSection";
 import HeroSection from "./components/hero/HeroSection";
 import SkillsPage from "./components/skills/SkillsSection";
@@ -21,6 +21,7 @@ import { Project, ProjectModalProps, MotionScale } from "./types";
 const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeSection, setActiveSection] = useState<number>(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   // Create refs for each section
   const heroRef = useRef<HTMLDivElement>(null);
@@ -41,6 +42,7 @@ const Portfolio = () => {
   // Navigation function with proper typing
   const navigateToSection = (sectionIndex: number): void => {
     setActiveSection(sectionIndex);
+    setIsMobileMenuOpen(false); // Close mobile menu after navigation
 
     const refs = [heroRef, aboutRef, skillsRef, projectsRef, contactRef];
     const targetRef = refs[sectionIndex];
@@ -211,6 +213,34 @@ const Portfolio = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isMobileMenuOpen &&
+        !(event.target as Element).closest(".mobile-menu")
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMobileMenuOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMobileMenuOpen]);
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -256,6 +286,42 @@ const Portfolio = () => {
   const tapScale: MotionScale = {
     scale: 0.95,
     transition: { type: "spring", stiffness: 300, damping: 10 },
+  };
+
+  // Mobile menu variants
+  const mobileMenuVariants: Variants = {
+    closed: {
+      opacity: 0,
+      x: "100%",
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+      },
+    },
+    open: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const menuItemVariants: Variants = {
+    closed: {
+      opacity: 0,
+      x: 20,
+    },
+    open: (i: number) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.3,
+        ease: "easeOut",
+      },
+    }),
   };
 
   // Floating Orbs Component
@@ -306,25 +372,25 @@ const Portfolio = () => {
     return (
       <AnimatePresence>
         <motion.div
-          className="fixed inset-0 bg-black/80 backdrop-blur-xl z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/80 backdrop-blur-xl z-50 flex items-center justify-center p-2 sm:p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="bg-gradient-to-br from-gray-900/90 to-black/90 backdrop-blur-2xl border border-white/20 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-auto"
+            className="bg-gradient-to-br from-gray-900/90 to-black/90 backdrop-blur-2xl border border-white/20 rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-auto"
             initial={{ opacity: 0, scale: 0.8, y: 50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 50 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-8">
-              <div className="flex justify-between items-start mb-6">
-                <div>
+            <div className="p-4 sm:p-6 lg:p-8">
+              <div className="flex justify-between items-start mb-4 sm:mb-6">
+                <div className="flex-1 pr-4">
                   <motion.h3
-                    className="text-3xl font-bold text-white mb-2"
+                    className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2 leading-tight"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 }}
@@ -332,7 +398,7 @@ const Portfolio = () => {
                     {project.title}
                   </motion.h3>
                   <motion.div
-                    className={`inline-block px-4 py-2 rounded-full bg-gradient-to-r ${project.gradient} text-white text-sm font-medium`}
+                    className={`inline-block px-3 py-1 sm:px-4 sm:py-2 rounded-full bg-gradient-to-r ${project.gradient} text-white text-xs sm:text-sm font-medium`}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.3 }}
@@ -342,22 +408,22 @@ const Portfolio = () => {
                 </div>
                 <motion.button
                   onClick={onClose}
-                  className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-full transition-all duration-300"
+                  className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-full transition-all duration-300 flex-shrink-0"
                   whileHover={hoverScale}
                   whileTap={tapScale}
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5 sm:w-6 sm:h-6" />
                 </motion.button>
               </div>
 
-              <div className="grid lg:grid-cols-2 gap-8 mb-8">
+              <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8">
                 <motion.div
-                  className="space-y-6"
+                  className="space-y-4 sm:space-y-6 order-2 lg:order-1"
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 }}
                 >
-                  <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden border border-white/10 transform transition-transform duration-300 hover:scale-105">
+                  <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl sm:rounded-2xl overflow-hidden border border-white/10 transform transition-transform duration-300 hover:scale-105">
                     <iframe
                       src={project.preview}
                       title={project.title}
@@ -368,12 +434,12 @@ const Portfolio = () => {
                     ></iframe>
                   </div>
 
-                  <div className="space-y-4">
-                    <h4 className="text-xl font-semibold text-white">
+                  <div className="space-y-3 sm:space-y-4">
+                    <h4 className="text-lg sm:text-xl font-semibold text-white">
                       Key Features
                     </h4>
                     <motion.div
-                      className="grid grid-cols-2 gap-3"
+                      className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3"
                       variants={containerVariants}
                       initial="hidden"
                       animate="visible"
@@ -381,12 +447,12 @@ const Portfolio = () => {
                       {project?.features.map((feature, i) => (
                         <motion.div
                           key={i}
-                          className="flex items-center space-x-2 p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-300"
+                          className="flex items-center space-x-2 p-2 sm:p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-300"
                           variants={itemVariants}
                           whileHover={hoverScale}
                         >
-                          <Sparkles className="w-4 h-4 text-purple-400" />
-                          <span className="text-white/80 text-sm">
+                          <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-purple-400 flex-shrink-0" />
+                          <span className="text-white/80 text-xs sm:text-sm">
                             {feature}
                           </span>
                         </motion.div>
@@ -396,29 +462,29 @@ const Portfolio = () => {
                 </motion.div>
 
                 <motion.div
-                  className="space-y-6"
+                  className="space-y-4 sm:space-y-6 order-1 lg:order-2"
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.5 }}
                 >
                   <div>
-                    <h4 className="text-xl font-semibold text-white mb-4">
+                    <h4 className="text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4">
                       About This Project
                     </h4>
-                    <p className="text-white/70 leading-relaxed">
+                    <p className="text-white/70 leading-relaxed text-sm sm:text-base">
                       {project.description}
                     </p>
                   </div>
 
                   <div>
-                    <h4 className="text-lg font-semibold text-white mb-4">
+                    <h4 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
                       Technologies Used
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {project.tech.map((tech, i) => (
                         <motion.span
                           key={i}
-                          className="px-4 py-2 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-full text-sm text-white/90"
+                          className="px-3 py-1 sm:px-4 sm:py-2 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-full text-xs sm:text-sm text-white/90"
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.6 + i * 0.1 }}
@@ -430,23 +496,23 @@ const Portfolio = () => {
                     </div>
                   </div>
 
-                  <div className="flex space-x-4 pt-6">
+                  <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 pt-4 sm:pt-6">
                     <motion.button
-                      className="flex-1 flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-6 py-3 rounded-xl font-medium"
+                      className="flex-1 flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl font-medium text-sm sm:text-base"
                       whileHover={hoverScale}
                       whileTap={tapScale}
                       onClick={() => window.open(project.demo, "_blank")}
                     >
-                      <Eye className="w-5 h-5" />
+                      <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
                       <span>View Live</span>
                     </motion.button>
                     <motion.button
                       onClick={() => window.open(project.github, "_blank")}
-                      className="flex-1 flex items-center justify-center space-x-2 bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-xl font-medium border border-white/20"
+                      className="flex-1 flex items-center justify-center space-x-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl font-medium border border-white/20 text-sm sm:text-base"
                       whileHover={hoverScale}
                       whileTap={tapScale}
                     >
-                      <Github className="w-5 h-5" />
+                      <Github className="w-4 h-4 sm:w-5 sm:h-5" />
                       <span>Source Code</span>
                     </motion.button>
                   </div>
@@ -458,6 +524,14 @@ const Portfolio = () => {
       </AnimatePresence>
     );
   };
+
+  const navigationItems = [
+    { name: "Home", index: 0 },
+    { name: "About", index: 1 },
+    { name: "Skills", index: 2 },
+    { name: "Projects", index: 3 },
+    { name: "Contact", index: 4 },
+  ];
 
   return (
     <div className="bg-gradient-to-br from-gray-900 via-black to-purple-900 text-white min-h-screen relative overflow-x-hidden">
@@ -476,23 +550,19 @@ const Portfolio = () => {
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.4, 0.0, 0.2, 1] }}
       >
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
           <motion.div
-            className="text-3xl font-black bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent cursor-pointer"
+            className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent cursor-pointer"
             whileHover={{ scale: 1.1, rotate: 5 }}
             transition={{ type: "spring", stiffness: 300 }}
             onClick={() => navigateToSection(0)}
           >
             Muwafaq
           </motion.div>
+
+          {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
-            {[
-              { name: "Home", index: 0 },
-              { name: "About", index: 1 },
-              { name: "Skills", index: 2 },
-              { name: "Projects", index: 3 },
-              { name: "Contact", index: 4 },
-            ].map((item) => (
+            {navigationItems.map((item) => (
               <motion.button
                 key={item.name}
                 onClick={() => navigateToSection(item.index)}
@@ -514,8 +584,113 @@ const Portfolio = () => {
               </motion.button>
             ))}
           </div>
+
+          {/* Mobile Hamburger Button */}
+          <motion.button
+            className="md:hidden p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            whileHover={hoverScale}
+            whileTap={tapScale}
+          >
+            <Menu className="w-6 h-6" />
+          </motion.button>
         </div>
       </motion.nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 md:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            <motion.div
+              className="mobile-menu fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-gradient-to-br from-gray-900/95 to-black/95 backdrop-blur-2xl border-l border-white/20 z-40 md:hidden"
+              variants={mobileMenuVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+            >
+              <div className="flex flex-col h-full">
+                {/* Mobile Menu Header */}
+                <div className="flex justify-between items-center p-6 border-b border-white/10">
+                  <motion.div
+                    className="text-2xl font-black bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Menu
+                  </motion.div>
+                  <motion.button
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
+                    whileHover={hoverScale}
+                    whileTap={tapScale}
+                    initial={{ opacity: 0, rotate: -90 }}
+                    animate={{ opacity: 1, rotate: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <X className="w-6 h-6" />
+                  </motion.button>
+                </div>
+
+                {/* Mobile Menu Items */}
+                <div className="flex-1 px-6 py-8">
+                  <div className="space-y-2">
+                    {navigationItems.map((item, index) => (
+                      <motion.button
+                        key={item.name}
+                        onClick={() => navigateToSection(item.index)}
+                        className={`w-full text-left px-4 py-4 rounded-xl transition-all duration-300 relative group ${
+                          activeSection === item.index
+                            ? "bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-white border border-purple-500/30"
+                            : "text-white/70 hover:text-white hover:bg-white/5"
+                        }`}
+                        variants={menuItemVariants}
+                        initial="closed"
+                        animate="open"
+                        custom={index}
+                        whileHover={hoverScale}
+                        whileTap={tapScale}
+                      >
+                        <span className="text-lg font-medium">{item.name}</span>
+                        {activeSection === item.index && (
+                          <motion.div
+                            className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-400 to-blue-400 rounded-r-full"
+                            layoutId="activeIndicator"
+                            transition={{
+                              type: "spring",
+                              stiffness: 300,
+                              damping: 30,
+                            }}
+                          />
+                        )}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Mobile Menu Footer */}
+                <div className="p-6 border-t border-white/10">
+                  <motion.div
+                    className="text-center text-white/40 text-sm"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 }}
+                  >
+                    © 2024 Muwafaq Portfolio
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section */}
       <div ref={heroRef}>
