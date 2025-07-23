@@ -1,12 +1,13 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion, Variants, TargetAndTransition } from "framer-motion";
 import { ChevronRight, Eye, Github, Play } from "lucide-react";
+
 type ProjectPageProps = {
   containerVariants: Variants;
   itemVariants: Variants;
-  hoverScale: Variants;
-  tapScale: Variants;
+  hoverScale: TargetAndTransition; // Changed from Variants to TargetAndTransition
+  tapScale: TargetAndTransition; // Changed from Variants to TargetAndTransition
   projects: {
     id: string;
     title: string;
@@ -28,6 +29,7 @@ type ProjectPageProps = {
     gradient: string;
   }) => void;
 };
+
 export default function ProjectPage({
   containerVariants,
   itemVariants,
@@ -86,12 +88,6 @@ export default function ProjectPage({
             >
               <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden hover:bg-white/10 transition-all duration-500">
                 <div className="aspect-video relative overflow-hidden">
-                  {/* <motion.img
-                      src={project.preview}
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    /> */}
-
                   <iframe
                     src={project.preview}
                     title={project.title}

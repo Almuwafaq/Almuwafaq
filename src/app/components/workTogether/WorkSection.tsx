@@ -1,19 +1,31 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Linkedin, Mail, Phone } from "lucide-react";
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import emailjs from "@emailjs/browser";
 
-export default function WorkTogether({}) {
-  const [formData, setFormData] = useState({
+interface FormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
+interface Status {
+  type: string;
+  message: string;
+}
+
+export default function WorkTogether() {
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -24,14 +36,14 @@ export default function WorkTogether({}) {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: [0.25, 0.46, 0.45, 0.94], // easeOutQuart
       },
     },
   };
@@ -43,29 +55,32 @@ export default function WorkTogether({}) {
       transition: {
         duration: 20,
         repeat: Infinity,
-        ease: "linear",
+        ease: [0, 0, 1, 1], // linear
       },
     },
   };
 
   const hoverScale = {
     scale: 1.05,
-    transition: { type: "spring", stiffness: 300, damping: 10 },
+    transition: { type: "spring" as const, stiffness: 300, damping: 10 },
   };
 
   const tapScale = {
     scale: 0.95,
-    transition: { type: "spring", stiffness: 300, damping: 10 },
+    transition: { type: "spring" as const, stiffness: 300, damping: 10 },
   };
-  const [isLoading, setIsLoading] = useState(false);
-  const [status, setStatus] = useState({ type: "", message: "" });
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [status, setStatus] = useState<Status>({ type: "", message: "" });
 
   // EmailJS configuration
   const SERVICE_ID = "service_1kao35d";
   const TEMPLATE_ID = "template_gc7p932";
   const PUBLIC_KEY = "DQUqjETRuZDHjjIiP";
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -73,7 +88,7 @@ export default function WorkTogether({}) {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setStatus({ type: "", message: "" });
@@ -287,7 +302,7 @@ export default function WorkTogether({}) {
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
-                    rows="4"
+                    rows={4}
                     placeholder="Your Message"
                     required
                     className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:bg-white/20 focus:border-purple-400 transition-all duration-300 outline-none resize-none"

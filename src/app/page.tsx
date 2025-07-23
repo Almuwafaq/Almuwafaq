@@ -6,19 +6,9 @@ import {
   useScroll,
   useTransform,
   useSpring,
+  Variants,
 } from "framer-motion";
-import {
-  Github,
-  Code,
-  Smartphone,
-  Globe,
-  Database,
-  Zap,
-  X,
-  Eye,
-  Layers,
-  Sparkles,
-} from "lucide-react";
+import { Github, X, Eye, Sparkles } from "lucide-react";
 import AboutPage from "./components/about/AboutSection";
 import HeroSection from "./components/hero/HeroSection";
 import SkillsPage from "./components/skills/SkillsSection";
@@ -26,16 +16,18 @@ import ProjectPage from "./components/project/ProjectSection";
 import Footer from "./components/footer/FooterSection";
 import WorkTogether from "./components/workTogether/WorkSection";
 
+import { Project, ProjectModalProps, MotionScale } from "./types";
+
 const Portfolio = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [activeSection, setActiveSection] = useState(0);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [activeSection, setActiveSection] = useState<number>(0);
 
   // Create refs for each section
-  const heroRef = useRef(null);
-  const aboutRef = useRef(null);
-  const skillsRef = useRef(null);
-  const projectsRef = useRef(null);
-  const contactRef = useRef(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const aboutRef = useRef<HTMLDivElement>(null);
+  const skillsRef = useRef<HTMLDivElement>(null);
+  const projectsRef = useRef<HTMLDivElement>(null);
+  const contactRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll();
   const pathLength = useSpring(scrollYProgress, {
@@ -46,8 +38,8 @@ const Portfolio = () => {
   // You can use yRange for parallax effects if needed
   const yRange = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
-  // Navigation function
-  const navigateToSection = (sectionIndex) => {
+  // Navigation function with proper typing
+  const navigateToSection = (sectionIndex: number): void => {
     setActiveSection(sectionIndex);
 
     const refs = [heroRef, aboutRef, skillsRef, projectsRef, contactRef];
@@ -61,9 +53,138 @@ const Portfolio = () => {
     }
   };
 
+  // Type adapter for ProjectPage component
+  const handleProjectSelection = (project: {
+    id: string;
+    title: string;
+    description: string;
+    preview: string;
+    github: string;
+    status: string;
+    tech: string[];
+    gradient: string;
+  }) => {
+    // Find the full project from our projects array
+    const fullProject = projects.find((p) => p.id === project.id);
+    setSelectedProject(fullProject || null);
+  };
+
+  const projects: Project[] = [
+    {
+      id: "1", // Changed from number to string
+      title: "Service Marketplace Platform",
+      description:
+        "Full-stack marketplace connecting consumers with vendors, featuring real-time chat, admin dashboard, and payment integration",
+      tech: ["React", "Node.js", "Socket.io", "Redux", "PostgreSQL"],
+      status: "Live",
+      gradient: "from-blue-500 via-purple-500 to-pink-500",
+      preview: "https://gywde.com/",
+      features: [
+        "Real-time Chat",
+        "Payment Integration",
+        "Admin Dashboard",
+        "Vendor Management",
+      ],
+      github: "https://github.com/SmartApproaches/GYWD-Frontend.git",
+      demo: "https://gywde.com/",
+    },
+    {
+      id: "2", // Changed from number to string
+      title: "E-Learning Platform",
+      description:
+        "Comprehensive learning management system with course creation, video streaming, progress tracking, and certification",
+      tech: ["Next.js", "React", "API Integration", "Redux", "AWS"],
+      status: "Live",
+      gradient: "from-green-400 via-blue-500 to-purple-600",
+      preview: "https://www.smartapproaches.org/",
+      features: [
+        "Video Streaming",
+        "Progress Tracking",
+        "Certification",
+        "Course Creation",
+      ],
+      github: "https://github.com/SmartApproaches/SAWL-FRONTEND-.git",
+      demo: "https://www.smartapproaches.org/",
+    },
+    {
+      id: "3", // Changed from number to string
+      title: "Dating Mobile App - Intwit",
+      description:
+        "React Native dating platform with AI matching algorithms, real-time messaging, and location-based discovery",
+      tech: ["React Native", "RTK Query", "WebSocket", "Expo", "Firebase"],
+      status: "In Development",
+      gradient: "from-pink-400 via-red-500 to-yellow-500",
+      preview: "https://new-swaap.vercel.app/",
+      features: [
+        "AI Matching",
+        "Real-time Messaging",
+        "Location Discovery",
+        "Social Features",
+      ],
+      github: "https://github.com/Almuwafaq/new_swaap.git",
+      demo: "https://new-swaap.vercel.app/",
+    },
+    {
+      id: "4", // Changed from number to string
+      title: "Staff Management System",
+      description:
+        "Comprehensive mobile app for staff attendance with geolocation validation, shift scheduling, and reporting",
+      tech: ["React Native", "Geolocation API", "Redux", "REST API", "Charts"],
+      status: "Completed",
+      gradient: "from-cyan-400 via-blue-500 to-indigo-600",
+      preview: "https://new-swaap.vercel.app/",
+      features: [
+        "Geolocation Tracking",
+        "Shift Scheduling",
+        "Reporting",
+        "Analytics",
+      ],
+      github: "#",
+      demo: "#",
+    },
+    {
+      id: "5", // Changed from number to string
+      title: "Z-Coop SaaS Platform",
+      description:
+        "Cooperative management platform with member management, financial tracking, and reporting dashboard",
+      tech: ["React", "Redux", "JavaScript", "CSS3", "Chart.js"],
+      status: "Completed",
+      gradient: "from-emerald-400 via-teal-500 to-blue-600",
+      preview:
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+      features: [
+        "Member Management",
+        "Financial Tracking",
+        "Report Dashboard",
+        "Analytics",
+      ],
+      github: "#",
+      demo: "#",
+    },
+    {
+      id: "6", // Changed from number to string
+      title: "Real-time Chat Application",
+      description:
+        "Modern chat application with file sharing, emoji reactions, and group conversations",
+      tech: ["React", "Socket.io", "Node.js", "Express", "MongoDB"],
+      status: "Live",
+      gradient: "from-violet-400 via-purple-500 to-indigo-600",
+      preview:
+        "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop",
+      features: [
+        "File Sharing",
+        "Emoji Reactions",
+        "Group Chat",
+        "Real-time Updates",
+      ],
+      github: "#",
+      demo: "#",
+    },
+  ];
+
   // Optional: Update active section based on scroll position
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = (): void => {
       const sections = [
         { ref: heroRef, index: 0 },
         { ref: aboutRef, index: 1 },
@@ -90,183 +211,32 @@ const Portfolio = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const skills = [
-    {
-      name: "React.js",
-      level: 95,
-      icon: <Code />,
-      color: "from-blue-400 to-cyan-400",
-    },
-    {
-      name: "Next.js",
-      level: 90,
-      icon: <Globe />,
-      color: "from-purple-400 to-pink-400",
-    },
-    {
-      name: "React Native",
-      level: 85,
-      icon: <Smartphone />,
-      color: "from-green-400 to-blue-400",
-    },
-    {
-      name: "Redux",
-      level: 88,
-      icon: <Database />,
-      color: "from-yellow-400 to-orange-400",
-    },
-    {
-      name: "Node.js",
-      level: 80,
-      icon: <Zap />,
-      color: "from-red-400 to-pink-400",
-    },
-    {
-      name: "TypeScript",
-      level: 85,
-      icon: <Layers />,
-      color: "from-indigo-400 to-purple-400",
-    },
-  ];
-
-  const projects = [
-    {
-      id: 1,
-      title: "Service Marketplace Platform",
-      description:
-        "Full-stack marketplace connecting consumers with vendors, featuring real-time chat, admin dashboard, and payment integration",
-      tech: ["React", "Node.js", "Socket.io", "Redux", "PostgreSQL"],
-      status: "Live",
-      gradient: "from-blue-500 via-purple-500 to-pink-500",
-      preview: "https://gywde.com/",
-      features: [
-        "Real-time Chat",
-        "Payment Integration",
-        "Admin Dashboard",
-        "Vendor Management",
-      ],
-      github: "https://github.com/SmartApproaches/GYWD-Frontend.git",
-      demo: "https://gywde.com/",
-    },
-    {
-      id: 2,
-      title: "E-Learning Platform",
-      description:
-        "Comprehensive learning management system with course creation, video streaming, progress tracking, and certification",
-      tech: ["Next.js", "React", "API Integration", "Redux", "AWS"],
-      status: "Live",
-      gradient: "from-green-400 via-blue-500 to-purple-600",
-      preview: "https://www.smartapproaches.org/",
-      features: [
-        "Video Streaming",
-        "Progress Tracking",
-        "Certification",
-        "Course Creation",
-      ],
-      github: "https://github.com/SmartApproaches/SAWL-FRONTEND-.git",
-      demo: "https://www.smartapproaches.org/",
-    },
-    {
-      id: 3,
-      title: "Dating Mobile App - Intwit",
-      description:
-        "React Native dating platform with AI matching algorithms, real-time messaging, and location-based discovery",
-      tech: ["React Native", "RTK Query", "WebSocket", "Expo", "Firebase"],
-      status: "In Development",
-      gradient: "from-pink-400 via-red-500 to-yellow-500",
-      preview: "https://new-swaap.vercel.app/",
-      features: [
-        "AI Matching",
-        "Real-time Messaging",
-        "Location Discovery",
-        "Social Features",
-      ],
-      github: "https://github.com/Almuwafaq/new_swaap.git",
-      demo: "https://new-swaap.vercel.app/",
-    },
-    {
-      id: 4,
-      title: "Staff Management System",
-      description:
-        "Comprehensive mobile app for staff attendance with geolocation validation, shift scheduling, and reporting",
-      tech: ["React Native", "Geolocation API", "Redux", "REST API", "Charts"],
-      status: "Completed",
-      gradient: "from-cyan-400 via-blue-500 to-indigo-600",
-      preview: "https://new-swaap.vercel.app/",
-      features: [
-        "Geolocation Tracking",
-        "Shift Scheduling",
-        "Reporting",
-        "Analytics",
-      ],
-      github: "#",
-      demo: "#",
-    },
-    {
-      id: 5,
-      title: "Z-Coop SaaS Platform",
-      description:
-        "Cooperative management platform with member management, financial tracking, and reporting dashboard",
-      tech: ["React", "Redux", "JavaScript", "CSS3", "Chart.js"],
-      status: "Completed",
-      gradient: "from-emerald-400 via-teal-500 to-blue-600",
-      preview:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
-      features: [
-        "Member Management",
-        "Financial Tracking",
-        "Report Dashboard",
-        "Analytics",
-      ],
-      github: "#",
-      demo: "#",
-    },
-    {
-      id: 6,
-      title: "Real-time Chat Application",
-      description:
-        "Modern chat application with file sharing, emoji reactions, and group conversations",
-      tech: ["React", "Socket.io", "Node.js", "Express", "MongoDB"],
-      status: "Live",
-      gradient: "from-violet-400 via-purple-500 to-indigo-600",
-      preview:
-        "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop",
-      features: [
-        "File Sharing",
-        "Emoji Reactions",
-        "Group Chat",
-        "Real-time Updates",
-      ],
-      github: "#",
-      demo: "#",
-    },
-  ];
-
-  // Animation variants
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
         delayChildren: 0.2,
+        duration: 0.6,
+        ease: [0.4, 0.0, 0.2, 1], // Custom cubic-bezier easing
       },
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: [0.4, 0.0, 0.2, 1], // Custom cubic-bezier easing
       },
     },
   };
 
-  const floatingVariants = {
+  const floatingVariants: Variants = {
     animate: {
       y: [0, -20, 0],
       rotate: [0, 360],
@@ -278,18 +248,18 @@ const Portfolio = () => {
     },
   };
 
-  const hoverScale = {
+  const hoverScale: MotionScale = {
     scale: 1.05,
     transition: { type: "spring", stiffness: 300, damping: 10 },
   };
 
-  const tapScale = {
+  const tapScale: MotionScale = {
     scale: 0.95,
     transition: { type: "spring", stiffness: 300, damping: 10 },
   };
 
   // Floating Orbs Component
-  const FloatingOrbs = () => (
+  const FloatingOrbs: React.FC = () => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {[...Array(15)].map((_, i) => (
         <motion.div
@@ -330,8 +300,7 @@ const Portfolio = () => {
     </div>
   );
 
-  // Project Modal Component
-  const ProjectModal = ({ project, onClose }) => {
+  const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
     if (!project) return null;
 
     return (
@@ -409,7 +378,7 @@ const Portfolio = () => {
                       initial="hidden"
                       animate="visible"
                     >
-                      {project.features.map((feature, i) => (
+                      {project?.features.map((feature, i) => (
                         <motion.div
                           key={i}
                           className="flex items-center space-x-2 p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-300"
@@ -505,7 +474,7 @@ const Portfolio = () => {
         className="fixed top-0 left-0 right-0 z-40 bg-black/20 backdrop-blur-2xl border-b border-white/10"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.8, ease: [0.4, 0.0, 0.2, 1] }}
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <motion.div
@@ -555,21 +524,12 @@ const Portfolio = () => {
 
       {/* About Section */}
       <div ref={aboutRef}>
-        <AboutPage
-          containerVariants={containerVariants}
-          itemVariants={itemVariants}
-        />
+        <AboutPage />
       </div>
 
       {/* Skills Section */}
       <div ref={skillsRef}>
-        <SkillsPage
-          containerVariants={containerVariants}
-          itemVariants={itemVariants}
-          hoverScale={hoverScale}
-          tapScale={tapScale}
-          skills={skills}
-        />
+        <SkillsPage />
       </div>
 
       {/* Projects Section */}
@@ -578,20 +538,15 @@ const Portfolio = () => {
           hoverScale={hoverScale}
           tapScale={tapScale}
           projects={projects}
-          setSelectedProject={setSelectedProject}
-          containerVariants={containerVariants}
           itemVariants={itemVariants}
+          containerVariants={containerVariants}
+          setSelectedProject={handleProjectSelection}
         />
       </div>
 
       {/* Contact/Work Together Section */}
       <div ref={contactRef}>
-        <WorkTogether
-          containerVariants={containerVariants}
-          itemVariants={itemVariants}
-          hoverScale={hoverScale}
-          tapScale={tapScale}
-        />
+        <WorkTogether />
       </div>
 
       <Footer />

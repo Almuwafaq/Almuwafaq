@@ -1,20 +1,48 @@
 "use client";
 import { motion, Variants } from "framer-motion";
-import { JSX } from "react/jsx-runtime";
+import { Code, Database, Globe, Layers, Smartphone, Zap } from "lucide-react";
+import { Skill } from "../../types";
+const skills: Skill[] = [
+  {
+    name: "React.js",
+    level: 95,
+    icon: <Code />,
+    color: "from-blue-400 to-cyan-400",
+  },
+  {
+    name: "Next.js",
+    level: 90,
+    icon: <Globe />,
+    color: "from-purple-400 to-pink-400",
+  },
+  {
+    name: "React Native",
+    level: 85,
+    icon: <Smartphone />,
+    color: "from-green-400 to-blue-400",
+  },
+  {
+    name: "Redux",
+    level: 88,
+    icon: <Database />,
+    color: "from-yellow-400 to-orange-400",
+  },
+  {
+    name: "Node.js",
+    level: 80,
+    icon: <Zap />,
+    color: "from-red-400 to-pink-400",
+  },
+  {
+    name: "TypeScript",
+    level: 85,
+    icon: <Layers />,
+    color: "from-indigo-400 to-purple-400",
+  },
+];
 
-type Skill = {
-  name: string;
-  level: number;
-  color: string;
-  icon: JSX.Element;
-};
-
-type SkillsPageProps = {
-  skills: Skill[];
-};
-
-export default function SkillsPage({ skills }: SkillsPageProps) {
-  const containerVariants = {
+export default function SkillsPage() {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -25,19 +53,19 @@ export default function SkillsPage({ skills }: SkillsPageProps) {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: [0.25, 0.46, 0.45, 0.94], // Cubic bezier equivalent to "easeOut"
       },
     },
   };
 
-  const floatingVariants = {
+  const floatingVariants: Variants = {
     animate: {
       y: [0, -20, 0],
       rotate: [0, 360],
@@ -51,13 +79,14 @@ export default function SkillsPage({ skills }: SkillsPageProps) {
 
   const hoverScale = {
     scale: 1.05,
-    transition: { type: "spring", stiffness: 300, damping: 10 },
+    transition: { type: "spring" as const, stiffness: 300, damping: 10 },
   };
 
   const tapScale = {
     scale: 0.95,
-    transition: { type: "spring", stiffness: 300, damping: 10 },
+    transition: { type: "spring" as const, stiffness: 300, damping: 10 },
   };
+
   return (
     <motion.section
       className="py-20 relative"
@@ -131,7 +160,7 @@ export default function SkillsPage({ skills }: SkillsPageProps) {
                   transition={{
                     duration: 1.5,
                     delay: index * 0.1,
-                    ease: "easeOut",
+                    ease: [0.25, 0.46, 0.45, 0.94], // Cubic bezier equivalent to "easeOut"
                   }}
                 />
               </div>

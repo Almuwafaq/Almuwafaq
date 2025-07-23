@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { ArrowRight, Github, Linkedin, Mail, Download } from "lucide-react";
 import { Typewriter } from "react-simple-typewriter";
 
@@ -25,7 +25,7 @@ export default function HeroSection({ setActiveSection }: HeroSectionProps) {
     // window.open(resumeUrl, '_blank');
   };
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -36,19 +36,19 @@ export default function HeroSection({ setActiveSection }: HeroSectionProps) {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: [0.6, -0.05, 0.01, 0.99], // Using cubic bezier array instead of string
       },
     },
   };
 
-  const floatingVariants = {
+  const floatingVariants: Variants = {
     animate: {
       y: [0, -20, 0],
       rotate: [0, 360],
@@ -157,10 +157,14 @@ export default function HeroSection({ setActiveSection }: HeroSectionProps) {
             onClick={() => setActiveSection(3)} // Navigate to Projects section (index 3)
             className="group relative px-10 py-4 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 rounded-2xl font-semibold text-white border border-white/20"
             whileHover={{
-              ...hoverScale,
+              scale: 1.05,
               boxShadow: "0 20px 40px rgba(139, 92, 246, 0.3)",
+              transition: { type: "spring", stiffness: 300, damping: 10 },
             }}
-            whileTap={tapScale}
+            whileTap={{
+              scale: 0.95,
+              transition: { type: "spring", stiffness: 300, damping: 10 },
+            }}
           >
             <span className="relative z-10 flex items-center space-x-2">
               <span>View My Projects</span>
@@ -177,10 +181,14 @@ export default function HeroSection({ setActiveSection }: HeroSectionProps) {
             onClick={handleResumeDownload}
             className="group px-10 py-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl font-semibold text-white hover:bg-white/20 transition-all duration-300"
             whileHover={{
-              ...hoverScale,
+              scale: 1.05,
               boxShadow: "0 15px 30px rgba(255, 255, 255, 0.1)",
+              transition: { type: "spring", stiffness: 300, damping: 10 },
             }}
-            whileTap={tapScale}
+            whileTap={{
+              scale: 0.95,
+              transition: { type: "spring", stiffness: 300, damping: 10 },
+            }}
           >
             <span className="flex items-center space-x-2">
               <Download className="w-5 h-5 group-hover:animate-bounce" />
@@ -219,8 +227,15 @@ export default function HeroSection({ setActiveSection }: HeroSectionProps) {
               rel="noopener noreferrer"
               className={`p-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl hover:bg-white/20 transition-all duration-300 group ${social.color}`}
               variants={itemVariants}
-              whileHover={{ ...hoverScale, rotate: 5 }}
-              whileTap={tapScale}
+              whileHover={{
+                scale: 1.05,
+                rotate: 5,
+                transition: { type: "spring", stiffness: 300, damping: 10 },
+              }}
+              whileTap={{
+                scale: 0.95,
+                transition: { type: "spring", stiffness: 300, damping: 10 },
+              }}
             >
               <div className="w-6 h-6">{social.icon}</div>
             </motion.a>
