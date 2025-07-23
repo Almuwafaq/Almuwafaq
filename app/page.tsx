@@ -683,7 +683,7 @@ const Portfolio = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.8 }}
                   >
-                    © 2024 Muwafaq Portfolio
+                    © 2025 Muwafaq Portfolio
                   </motion.div>
                 </div>
               </div>

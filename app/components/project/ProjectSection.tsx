@@ -54,7 +54,7 @@ export default function ProjectPage({
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
             Featured Projects
           </h2>
           <motion.div
@@ -64,7 +64,7 @@ export default function ProjectPage({
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           />
-          <p className="text-white/70 text-lg mt-6 max-w-2xl mx-auto">
+          <p className="text-white/70 text-lg md:text-md mt-6 max-w-2xl mx-auto">
             Discover my latest work showcasing modern web development techniques
             and innovative solutions
           </p>
