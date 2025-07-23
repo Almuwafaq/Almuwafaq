@@ -20,7 +20,7 @@ export default function Footer() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          © 2024 Taofeek Toriola. All rights reserved.
+          © 2025 Taofeek Toriola. All rights reserved.
         </motion.div>
         <motion.div
           className="flex justify-center space-x-6"
